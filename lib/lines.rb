@@ -343,7 +343,8 @@ module Lines
     end
 
     def strenc(s)
-      s = s.to_s
+      s = s.to_s.dup
+      s.force_encoding('utf-8')
       unless is_literal?(s)
         s = s.inspect
         unless s[1..-2].include?(SINGLE_QUOTE)
