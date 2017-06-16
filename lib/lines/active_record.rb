@@ -21,6 +21,11 @@ module Lines
 
       return if payload[:name] == 'SCHEMA' || payload[:name] == 'EXPLAIN'
 
+      if ENV['RACK_ENV'] && ENV['RACK_ENV'] != 'development'
+        return if payload[:name] == 'CACHE' || payload[:name].to_s =~ /(Load|Exists)$/
+        return if payload[:sql].to_s =~ /^SELECT/
+      end
+
       args = {}
 
       args[:name] = payload[:name] if payload[:name]
